@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+
 using MongoDB.Bson;
 using MongoDB.Driver;
+
 
 namespace DotNet
 {
@@ -9,11 +12,11 @@ namespace DotNet
     {
         static void Main(string[] args)
         {
-            var connectionString = "mongodb://localhost";
+            var connectionString = ConfigurationManager.AppSettings["mongodb"];
             var client = new MongoClient(connectionString);
 
             var server = client.GetServer();
-            var database = server.GetDatabase("course");
+            var database = server.GetDatabase(ConfigurationManager.AppSettings["database"]);
 
             Insert(database);
 
@@ -25,7 +28,6 @@ namespace DotNet
             var collection = db.GetCollection("insertTest");
 
             collection.Drop();
-
 
             //insert one doc
             var doc = new BsonDocument().Add("x", 1);
